@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require("morgan");
 const { ServerConfig, LoggerConfig } = require("./config");
 const apiRoutes = require("./routes");
+const CRON = require("./utils/common/cron-jobs");
 
 const PORT = ServerConfig.PORT;
 const app = express();
@@ -17,4 +18,5 @@ app.use("/api", apiRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is Up and Running on PORT:- ${PORT}`);
+    CRON();
 });

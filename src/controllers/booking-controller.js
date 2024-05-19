@@ -8,7 +8,7 @@ async function createBooking(req, res) {
         const flight = await BookingService.createBooking({
             flightId: req.body.flightId,
             userId: req.body.userId,
-            noOfSeats: req.body.seats,
+            noOfSeats: req.body.noOfSeats,
         });
         return res
             .status(StatusCodes.CREATED)
@@ -57,4 +57,5 @@ async function makePayment(req, res) {
 
 module.exports = {
     createBooking,
+    makePayment,
 };

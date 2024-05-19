@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-const { ServerConfig, LoggerConfig } = require("./config");
+const { ServerConfig, LoggerConfig, Queue } = require("./config");
 const apiRoutes = require("./routes");
 const CRON = require("./utils/common/cron-jobs");
 
@@ -16,7 +16,9 @@ app.use(
 );
 app.use("/api", apiRoutes);
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Server is Up and Running on PORT:- ${PORT}`);
     CRON();
+    await Queue.connectToQueue();
+    console.log("Queue Connected");
 });

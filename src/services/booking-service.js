@@ -1,9 +1,9 @@
 const axios = require("axios");
+const { StatusCodes } = require("http-status-codes");
 const { BookingRepository } = require("../repositories");
+const { ServerConfig, Queue } = require("../config");
 const db = require("../models");
 const AppError = require("../utils/error/app-error");
-const { ServerConfig } = require("../config");
-const { StatusCodes } = require("http-status-codes");
 const { Enums } = require("../utils/common");
 const { BOOKED, CANCELLED } = Enums.BOOKING_STATUS;
 
@@ -16,22 +16,24 @@ async function createBooking(data) {
             `${ServerConfig.FLIGHT_SERVICE}/api/v1/flights/${data.flightId}`
         );
         const flightData = flight.data.data;
-        if (data.noofSeats > flightData.totalSeats) {
+        if (data.noOfSeats > flightData.totalSeats) {
             throw new AppError(
                 "Not enough seats available",
                 StatusCodes.BAD_REQUEST
             );
         }
-        const totalBillingAmount = data.noofSeats * flightData.price;
+        const totalBillingAmount = data.noOfSeats * flightData.price;
         const bookingPayload = { ...data, totalCost: totalBillingAmount };
         const booking = await bookingRepository.create(
             bookingPayload,
             transaction
         );
+
         await axios.patch(
             `${ServerConfig.FLIGHT_SERVICE}/api/v1/flights/${data.flightId}/seats`,
             {
-                seats: data.noofSeats,
+                seats: data.noOfSeats,
+                dec: true,
             }
         );
         await transaction.commit();
@@ -84,6 +86,11 @@ async function makePayment(data) {
             transaction
         );
         await transaction.commit();
+        Queue.sendData({
+            recepientEmail: "mailtoshivam828@gmail.com",
+            subject: "Flight Booked Successfully",
+            text: `Booking Successfully done for the booking with ${data.bookingId}`,
+        });
     } catch (error) {
         await transaction.rollback();
         throw error;
@@ -126,6 +133,7 @@ async function cancelOldBookings() {
         console.log("Inside service");
         const time = new Date(Date.now() - 1000 * 300); // time 5 mins ago
         const response = await bookingRepository.cancelOldBookings(time);
+
         return response;
     } catch (error) {
         console.log(error);

@@ -1,27 +1,27 @@
 {
-  "name": "airline_management",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "amqplib": "^0.10.4",
-    "axios": "^1.6.8",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "http-status-codes": "^2.3.0",
-    "morgan": "^1.10.0",
-    "mysql2": "^3.9.7",
-    "node-cron": "^3.0.3",
-    "sequelize": "^6.37.3",
-    "sequelize-cli": "^6.6.2"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.0"
-  }
+    "name": "airline_management",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "nodemon src/index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "amqplib": "^0.10.4",
+        "axios": "^1.6.8",
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "http-status-codes": "^2.3.0",
+        "morgan": "^1.10.0",
+        "mysql2": "^3.9.7",
+        "node-cron": "^3.0.3",
+        "sequelize": "^6.37.3",
+        "sequelize-cli": "^6.6.2"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.0"
+    }
 }
